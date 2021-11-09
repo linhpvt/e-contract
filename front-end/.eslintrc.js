@@ -24,6 +24,7 @@ module.exports = {
     "object-curly-newline": "off",
     "react/jsx-filename-extension": "off",
     "no-use-before-define": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "no-unused-vars": "off"
   },
 };

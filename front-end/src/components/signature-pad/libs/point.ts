@@ -10,12 +10,14 @@ export class Point implements BasicPoint {
 
   constructor(public x: number, public y: number, time?: number) {
     this.time = time || Date.now();
+    this.x = x;
+    this.y = y;
   }
 
   public distanceTo(start: BasicPoint): number {
-    return Math.sqrt(
-      Math.pow(this.x - start.x, 2) + Math.pow(this.y - start.y, 2),
-    );
+    const xlen = this.x - start.x;
+    const ylen = this.y - start.y;
+    return Math.sqrt(xlen * xlen + ylen * ylen);
   }
 
   public equals(other: BasicPoint): boolean {
