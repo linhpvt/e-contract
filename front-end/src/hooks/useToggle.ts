@@ -2,9 +2,10 @@
   this hook is used to handle the toggle status
 */
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react'
 
 export default function useToggle(initial: boolean) {
-  const [value, setValue] = useState(initial);
-  return [value, () => setValue(!value)];
+	const [value, setValue] = useState(initial)
+	const setToggle = useCallback(() => setValue(!value), [setValue])
+	return [value, setToggle]
 }

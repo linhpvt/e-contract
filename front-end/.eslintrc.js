@@ -52,5 +52,6 @@ module.exports = {
 		'operator-assignment': 'off',
 		'no-restricted-syntax': 'off',
 		'prefer-template': 'off',
+		'implicit-arrow-linebreak': 'off',
 	},
 }

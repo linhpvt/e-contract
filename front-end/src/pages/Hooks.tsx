@@ -1,46 +1,59 @@
-import { useRef } from 'react'
-import useDebugComponent from '../hooks/useDebugComponent'
-import useEventListener from '../hooks/useEventListener'
+/* eslint-disable react/jsx-curly-newline */
+import { useRef, useState } from 'react'
 import useFormCache, { FieldType } from '../hooks/useFormCache'
-import useHover from '../hooks/useHover'
-import useNetworkStatus from '../hooks/useNetworkStatus'
-import useRenderCount from '../hooks/useRenderCount'
-import useTimeout from '../hooks/useTimeout'
-import useTitle from '../hooks/useTitle'
-import useToggle from '../hooks/useToggle'
+import useDebounce from '../hooks/useDebounce'
+import useArray, { ArrayAction } from '../hooks/useArray'
 
 const logger = () => console.log('OK, run this after timeout')
 export default function Hooks(props: any) {
-	const [, clear] = useTimeout(logger, 2000, [])
-	const count = useRef(2)
-	useDebugComponent('Hooks', props || {})
-	const renderNumber = useRenderCount()
-	console.log('renderNumber', renderNumber)
-	useTitle('linhpvt')
 	const refDiv = useRef(null)
 	const refDivHover = useRef(null)
-	// @ts-ignore
-	const hovered = useHover(refDivHover.current)
-	useEventListener(
-		'click',
-		e => console.log(e),
-		// @ts-ignore
-		refDiv.current
-	)
-	const [toggleValue, setToggle] = useToggle(true)
+	const [value, setValue] = useState(0)
 
-	const networkStatus = useNetworkStatus()
-	console.log(networkStatus)
 	const { formData, onChange } = useFormCache('userForm', {
 		name: '',
 		age: 10,
 		over18: true,
 	})
+
+	useDebounce(logger, 2000, [], [formData.name], true)
+
+	const { array, append, push, removeAt, replaceAt, perform } = useArray<number>(
+		[1, 2, 6, 4, 5]
+	)
 	const onSubmit = (e: any) => {
 		e.preventDefault()
 	}
 	return (
 		<>
+			<div>{array.join(',')}</div>
+			<div>
+				<button
+					type='button'
+					onClick={() => append(Math.round(Math.random() * 100))}
+				>
+					Append
+				</button>
+			</div>
+			<div>
+				<button type='button' onClick={() => push(Math.round(Math.random() * 100))}>
+					Push
+				</button>
+				<button type='button' onClick={() => removeAt(1)}>
+					Remove At 1
+				</button>
+				<button type='button' onClick={() => replaceAt(1, 11)}>
+					Replace At 1
+				</button>
+				<button
+					type='button'
+					onClick={() =>
+						perform(ArrayAction.filter, (item: number) => item > 10, null)
+					}
+				>
+					Greater 10
+				</button>
+			</div>
 			<form onSubmit={onSubmit}>
 				<div>
 					<label htmlFor='name'>Name: </label>
@@ -71,9 +84,9 @@ export default function Hooks(props: any) {
 				<div>
 					<input
 						type='submit'
-						value={toggleValue + ''}
+						value={value}
 						// @ts-ignore
-						onClick={setToggle}
+						onClick={() => setValue(value + 1)}
 					/>
 				</div>
 			</form>
@@ -87,7 +100,7 @@ export default function Hooks(props: any) {
 				style={{
 					width: 100,
 					height: 200,
-					backgroundColor: hovered ? 'red' : 'blue',
+					backgroundColor: 'red',
 				}}
 			></div>
 		</>

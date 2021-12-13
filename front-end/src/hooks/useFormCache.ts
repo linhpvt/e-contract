@@ -3,7 +3,7 @@
   2. populate form from local storage when user refresh page.
 */
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const FieldType = {
 	NUMBER: 'number',
@@ -12,14 +12,8 @@ export const FieldType = {
 }
 export default function useFormCache(formKey: string, initial: any) {
 	const [formData, setFieldValue] = useState(() => getStorage(formKey, initial))
-	// persist every change to local storage
-	// -> no dependency
-	useEffect(() => {
-		setTimeout(() => setStorage(formKey, formData), 0)
-	})
-	return {
-		formData,
-		onChange: (e: any) => {
+	const onChange = useCallback(
+		(e: any) => {
 			const name = e.target.name || ''
 			let fieldVal = e.target.value || ''
 			const fieldType = e.target.getAttribute('field-type') || ''
@@ -35,6 +29,17 @@ export default function useFormCache(formKey: string, initial: any) {
 			}
 			setFieldValue((current: any) => ({ ...current, [name]: fieldVal }))
 		},
+		[setFieldValue]
+	)
+
+	// persist every change to local storage
+	// -> no dependency
+	useEffect(() => {
+		setTimeout(() => setStorage(formKey, formData), 0)
+	})
+	return {
+		formData,
+		onChange,
 	}
 }
 
