@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-curly-newline */
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import useFormCache, { FieldType } from '../hooks/useFormCache'
 import useDebounce from '../hooks/useDebounce'
 import useArray, { ArrayAction } from '../hooks/useArray'
@@ -18,9 +18,15 @@ export default function Hooks(props: any) {
 
 	useDebounce(logger, 2000, [], [formData.name], true)
 
-	const { array, append, push, removeAt, replaceAt, perform } = useArray<number>(
-		[1, 2, 6, 4, 5]
-	)
+	const { array, append, push, removeAt, replaceAt, filter } = useArray<number>([
+		1, 2, 6, 4, 5,
+	])
+	const filterCb = useCallback((val: number) => val > 50, [])
+	const onFilter = useCallback(() => {
+		const result = filter(filterCb)
+		console.log('Filter, ', result)
+	}, [filterCb, filter])
+
 	const onSubmit = (e: any) => {
 		e.preventDefault()
 	}
@@ -45,12 +51,7 @@ export default function Hooks(props: any) {
 				<button type='button' onClick={() => replaceAt(1, 11)}>
 					Replace At 1
 				</button>
-				<button
-					type='button'
-					onClick={() =>
-						perform(ArrayAction.filter, (item: number) => item > 10, null)
-					}
-				>
+				<button type='button' onClick={onFilter}>
 					Greater 10
 				</button>
 			</div>

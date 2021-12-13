@@ -10,7 +10,11 @@ export default function useArray<T>(initial: T[]): {
 	append: (item: T) => void
 	removeAt: (index: number) => void
 	replaceAt: (index: number, item: T) => void
-	perform: (action: string, cb: Function, initial: any) => void
+	set: (newArray: T[]) => void
+	clear: () => void
+	filter: (cb: any) => T[]
+	map: (cb: any) => any[]
+	reduce: (cb: any, initial: any) => any
 } {
 	const [array, setArray] = useState(initial)
 
@@ -39,18 +43,17 @@ export default function useArray<T>(initial: T[]): {
 		])
 	}, [])
 
-	const perform = useCallback((action: string, cb: any, initial: any) => {
-		switch (action) {
-			case ArrayAction.filter:
-				setArray(array => array.filter(cb))
-				break
-			case ArrayAction.map:
-				setArray(array => array.map(cb))
-				break
-			default:
-				break
-		}
-	}, [])
+	const set = useCallback(
+		(newArray: T[]) => setArray(() => newArray),
+		[setArray]
+	)
+	const clear = useCallback(() => setArray(() => []), [setArray])
+	const filter = useCallback((cb: any) => array.filter(cb), [array])
+	const map = useCallback((cb: any) => array.map(cb), [array])
+	const reduce = useCallback(
+		(cb: any, initial: any) => array.reduce(cb, initial),
+		[array]
+	)
 
 	return {
 		array,
@@ -58,6 +61,10 @@ export default function useArray<T>(initial: T[]): {
 		append,
 		removeAt,
 		replaceAt,
-		perform,
+		set,
+		clear,
+		filter,
+		map,
+		reduce,
 	}
 }
