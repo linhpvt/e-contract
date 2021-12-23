@@ -1,14 +1,17 @@
 /* eslint-disable react/jsx-curly-newline */
 import { useCallback, useRef, useState } from 'react'
-import useFormCache, { FieldType } from '../hooks/useFormCache'
-import useDebounce from '../hooks/useDebounce'
-import useArray, { ArrayAction } from '../hooks/useArray'
+import usePrevious from 'hooks/usePrvious'
+import useHistoryData from 'hooks/useHistoryData'
+import useFormCache, { FieldType } from 'hooks/useFormCache'
+import useDebounce from 'hooks/useDebounce'
+import useArray, { ArrayAction } from 'hooks/useArray'
 
 const logger = () => console.log('OK, run this after timeout')
 export default function Hooks(props: any) {
 	const refDiv = useRef(null)
 	const refDivHover = useRef(null)
 	const [value, setValue] = useState(0)
+	const { value: v, next, previous } = useHistoryData(value, 10)
 
 	const { formData, onChange } = useFormCache('userForm', {
 		name: '',
@@ -21,10 +24,11 @@ export default function Hooks(props: any) {
 	const { array, append, push, removeAt, replaceAt, filter } = useArray<number>([
 		1, 2, 6, 4, 5,
 	])
+
+	const prevValue = usePrevious(formData.name)
 	const filterCb = useCallback((val: number) => val > 50, [])
 	const onFilter = useCallback(() => {
 		const result = filter(filterCb)
-		console.log('Filter, ', result)
 	}, [filterCb, filter])
 
 	const onSubmit = (e: any) => {
@@ -88,6 +92,20 @@ export default function Hooks(props: any) {
 						value={value}
 						// @ts-ignore
 						onClick={() => setValue(value + 1)}
+					/>
+
+					<input
+						type='submit'
+						value={'Next ' + v}
+						// @ts-ignore
+						onClick={next}
+					/>
+
+					<input
+						type='submit'
+						value={'Previous ' + v}
+						// @ts-ignore
+						onClick={previous}
 					/>
 				</div>
 			</form>

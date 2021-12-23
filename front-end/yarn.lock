@@ -10356,6 +10356,11 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
+signature_pad@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/signature_pad/-/signature_pad-4.0.0.tgz#4fc9a94e7744b34256dcb8b472c8ea3f28f12c82"
+  integrity sha512-47I2MULJIHaUAFuVbqMVWwZR+GEl2wH4QKg16OwpQg82GzVUL3Z405Um6sLgVB0xbP5rwqiNzfLTbJwipXvaWA==
+
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"

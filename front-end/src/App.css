@@ -1,7 +1,23 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: 12px;
-  font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.signature-pad {
+	cursor: pointer;
+	background-color: beige;
+	display: block;
+	margin: 5px;
+	padding: 5px;
+	border: 5px solid #c5c5c5;
+	width: 100%;
+	height: 100%;
+}
+.btn {
+	padding: 5px;
+	margin: 5px;
+	cursor: pointer;
 }
